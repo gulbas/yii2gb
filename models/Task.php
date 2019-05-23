@@ -34,9 +34,7 @@
 
 		public function relevantDateValidator($attribute, $params)
 		{
-			//Если указанная дата меньше даты начала,
 			if (date('d/m/Y h:m', strtotime($this->$attribute)) < date('d/m/Y h:m')) {
-				//записываем ошибку.
 				$this->addError($attribute, 'End date can not be less than the start date of the task.');
 			}
 		}

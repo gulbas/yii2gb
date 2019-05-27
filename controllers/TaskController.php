@@ -2,6 +2,7 @@
 
 	namespace app\controllers;
 
+
 	use app\models\Task;
 	use Yii;
 	use yii\web\Controller;
@@ -20,7 +21,7 @@
 						'description' => 'Do something very high quality. For example, imitate the rapid activity.',
 						'owner'       => 'Vasya',
 						'assigned'    => 'Petya',
-						'dedline'     => '25.03.2019 11:00',
+						'dedline'     => '26.03.2019 11:00',
 						'status'      => 'in progress',
 					],
 			]);

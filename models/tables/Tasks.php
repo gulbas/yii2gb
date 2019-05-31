@@ -3,6 +3,7 @@
 namespace app\models\tables;
 
 use Yii;
+use yii\debug\models\search\User;
 
 /**
  * This is the model class for table "tasks".
@@ -61,4 +62,14 @@ class Tasks extends \yii\db\ActiveRecord
 	{
 		return $this->hasOne(TaskStatuses::class, ['id' => 'status_id']);
     }
+
+	public function getCreator()
+	{
+		return $this->hasOne(Users::class, ['id' => 'creator_id']);
+	}
+
+	public function getResponsible()
+	{
+		return $this->hasOne(Users::class, ['id' => 'responsible_id']);
+	}
 }

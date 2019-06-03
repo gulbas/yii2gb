@@ -2,8 +2,12 @@
 
 	namespace app\controllers;
 
-	use app\models\{tables\Tasks, Test};
-	use Yii;
+	use app\models\{events\EventUserRegistrationComplete,
+		forms\RegisterUserForm,
+		Subscribe,
+		SubscribeBehavior,
+		tables\Tasks};
+	use yii\base\Event;
 	use yii\data\ActiveDataProvider;
 	use yii\web\Controller;
 
@@ -29,10 +33,50 @@
 
 		public function actionTest(): string
 		{
-			$model = new Test();
-			if (Yii::$app->request->post()) {
-				$model->load(Yii::$app->request->post());
-			}
-			return $this->render('test', ['model' => $model]);
+			$model = new RegisterUserForm([
+				'username'   => 'pupkin3',
+				'password'   => 'sdfsdfsd',
+				'email'      => 'asd@asd.asd',
+				'first_name' => 'pupkin',
+				'last_name'  => 'vasya',
+			]);
+
+			/*			$model->attachBehavior('my', [
+							'class' => SubscribeBehavior::class,
+							'message' => 'sdfsdf'
+						]);
+
+						$model->detachBehavior('my');*/
+
+			/*$handler = function (EventUserRegistrationComplete $event) {
+				(new Subscribe())->attache($event->userId);
+			};
+
+			$model->on(RegisterUserForm::EVENT_REGISTRATION_COMPLETE,
+				$handler
+			);
+
+			Event::on(
+				RegisterUserForm::class,
+				RegisterUserForm::EVENT_REGISTRATION_VALIDATE_SUCCESS,
+				$handler);
+
+			$model->on(RegisterUserForm::EVENT_REGISTRATION_VALIDATE_SUCCESS,
+				'foo');
+
+			$model->on(RegisterUserForm::EVENT_REGISTRATION_VALIDATE_SUCCESS,
+				[$this, 'handler']);
+
+			$model->off(RegisterUserForm::EVENT_REGISTRATION_VALIDATE_SUCCESS,
+				[TaskController::class, 'handler']);*/
+
+			$model->register();
+		}
+
+		public static function handler()
+		{
+
 		}
 	}
+
+

@@ -1,5 +1,6 @@
 <?php
 
+	use yii\caching\DbDependency;
 	use yii\helpers\Html;
 	use yii\widgets\DetailView;
 
@@ -7,7 +8,7 @@
 	/* @var $model app\models\tables\Tasks */
 
 	$this->title = $model->name;
-    /** @var TYPE_NAME $hide */
+	/** @var TYPE_NAME $hide */
 	if (!$hide) {
 		$this->params['breadcrumbs'][] = ['label' => 'Tasks', 'url' => ['index']];
 		$this->params['breadcrumbs'][] = $this->title;
@@ -30,36 +31,49 @@
 		]) ?>
     </p>
 
-	<?= DetailView::widget([
-		'model'      => $model,
-		'attributes' => [
-//			'id',
-			[
-				'label'  => 'ID',
-				'value'  => "<a href='view?id={$model->id}'>{$model->id}</a>",
-				'format' => 'html',
+	<?php
+		$key = '$task';
+		if ($this->beginCache($key, [
+			'duration'   => 10,
+			//			'enabled'  => false,
+			'variations' => [$model->id, Yii::$app->language],
+			'dependency' => [
+				'class' => DbDependency::class,
+				'sql'   => 'SELECT COUNT(*) FROM tasks',
 			],
-			'name',
-			'description',
-			'creator_id',
-			[
-				'label'  => 'Creator',
-				'value'  => "<a href='#'>{$model->creator->first_name} {$model->creator->last_name}</a>",
-				'format' => 'html',
-			],
-			'responsible_id',
-			[
-				'label'  => 'Responsible',
-				'value'  => "<a href='#'> {$model->responsible->first_name} {$model->responsible->last_name}</a>",
-				'format' => 'html',
-			],
-			'deadline',
-			'status_id',
-			[
-				'label' => 'Status',
-				'value' => $model->status->name,
-			],
-		],
-	]) ?>
+		])) {
+			echo DetailView::widget([
+				'model'      => $model,
+				'attributes' => [
+					[
+						'label'  => 'ID',
+						'value'  => "<a href='view?id={$model->id}'>{$model->id}</a>",
+						'format' => 'html',
+					],
+					'name',
+					'description',
+					'creator_id',
+					[
+						'label'  => 'Creator',
+						'value'  => "<a href='#'>{$model->creator->first_name} {$model->creator->last_name}</a>",
+						'format' => 'html',
+					],
+					'responsible_id',
+					[
+						'label'  => 'Responsible',
+						'value'  => "<a href='#'> {$model->responsible->first_name} {$model->responsible->last_name}</a>",
+						'format' => 'html',
+					],
+					'deadline',
+					'status_id',
+					[
+						'label' => 'Status',
+						'value' => $model->status->name,
+					],
+				],
+			]);
+			$this->endCache();
+		}
+	?>
 
 </div>

@@ -23,7 +23,6 @@
 			$this->batchInsert($this->tableName, ['name'], [
 				['New'],
 				['In work'],
-				['Done'],
 				['Testing'],
 				['Rework'],
 				['Done'],

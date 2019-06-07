@@ -15,7 +15,7 @@
 
 		public function attachEventHandler()
 		{
-			$sendEmail = function ($event) {
+			$sendEmail = function (Event $event) {
 				$task = $event->sender;
 				$user = $task->responsible;
 				\Yii::$app->mailer->compose()

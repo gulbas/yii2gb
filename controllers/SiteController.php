@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use Yii;
 use yii\filters\AccessControl;
+use yii\filters\PageCache;
 use yii\web\Controller;
 use yii\web\Response;
 use yii\filters\VerbFilter;
@@ -18,6 +19,11 @@ class SiteController extends Controller
     public function behaviors()
     {
         return [
+        	'cacheAbout' => [
+        		'class' => PageCache::class,
+		        'duration' => 100,
+		        'only' => ['about']
+	        ],
             'access' => [
                 'class' => AccessControl::className(),
                 'only' => ['logout'],

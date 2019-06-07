@@ -2,48 +2,81 @@
 
 	namespace app\controllers;
 
-
-	use app\models\Task;
-	use Yii;
+	use app\models\{events\EventUserRegistrationComplete,
+		forms\RegisterUserForm,
+		Subscribe,
+		SubscribeBehavior,
+		tables\Tasks};
+	use yii\base\Event;
+	use yii\data\ActiveDataProvider;
 	use yii\web\Controller;
 
 	class TaskController extends Controller
 	{
 		public function actionIndex(): string
 		{
-			$task = new Task();
-
-			$task->load([
-				'Task' =>
-					[
-						'id'          => 1,
-						'title'       => 'Something',
-						'description' => 'Do something very high quality. For example, imitate the rapid activity.',
-						'owner'       => 'Vasya',
-						'assigned'    => 'Petya',
-						'dedline'     => '26.03.2019 11:00',
-						'status'      => 'in progress',
+			$dataProvider = new ActiveDataProvider(
+				[
+					'query'      => Tasks::find(),
+					'pagination' => [
+						'pageSize' => 3,
 					],
-			]);
-
-			if (!$task->validate()) {
-				echo 'The problem with the field - <b>' . key($task->getErrors()) . '</b> <br />';
-				echo $task->getErrors()[key($task->getErrors())][0];
-				exit;
-			}
-
-			return $this->render('index', [
-				'task' => $task,
-			]);
+				]);
+			return $this->render('index', ['dataProvider' => $dataProvider]);
 		}
 
-		public function actionCard(): string
+		public function actionTask($id): string
 		{
-			$request = Yii::$app->request;
-			$id = $request->get('id');
+			$task = Tasks::findOne($id);
+			return $this->render('task', ['task' => $task]);
+		}
 
-			return $this->render('task', [
-				'id' => $id,
+		public function actionTest(): string
+		{
+			$model = new RegisterUserForm([
+				'username'   => 'pupkin3',
+				'password'   => 'sdfsdfsd',
+				'email'      => 'asd@asd.asd',
+				'first_name' => 'pupkin',
+				'last_name'  => 'vasya',
 			]);
+
+			/*			$model->attachBehavior('my', [
+							'class' => SubscribeBehavior::class,
+							'message' => 'sdfsdf'
+						]);
+
+						$model->detachBehavior('my');*/
+
+			/*$handler = function (EventUserRegistrationComplete $event) {
+				(new Subscribe())->attache($event->userId);
+			};
+
+			$model->on(RegisterUserForm::EVENT_REGISTRATION_COMPLETE,
+				$handler
+			);
+
+			Event::on(
+				RegisterUserForm::class,
+				RegisterUserForm::EVENT_REGISTRATION_VALIDATE_SUCCESS,
+				$handler);
+
+			$model->on(RegisterUserForm::EVENT_REGISTRATION_VALIDATE_SUCCESS,
+				'foo');
+
+			$model->on(RegisterUserForm::EVENT_REGISTRATION_VALIDATE_SUCCESS,
+				[$this, 'handler']);
+
+			$model->off(RegisterUserForm::EVENT_REGISTRATION_VALIDATE_SUCCESS,
+				[TaskController::class, 'handler']);*/
+
+			$model->register();
+		}
+
+		public static function handler()
+		{
+
 		}
 	}
+
+

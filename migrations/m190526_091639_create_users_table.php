@@ -33,9 +33,9 @@
 			$this->batchInsert($this->tableName,
 				['username', 'password', 'email', 'first_name', 'last_name', 'auth_key', 'access_token'],
 				[['admin', '$2y$10$/LM/dGk84ZXU/H0gXr3Ng.52T.Z8fTrfl/wPx19gXzhdpkG4drzJC',
-				  'admin@admin.ru', 'nbsp', 'nbsp', 'test100key', '101-token'],
+				  'admin@admin.ru', 'Admin', 'Zelepupkin', 'test100key', '101-token'],
 				 ['test', '$2y$10$IdcdDpRm25Ug55jFLY5Yu.38QpMEjRe0.gtx8ip1p1LWAmxj3N.RO',
-				  'test@test.ru', 'nbsp', 'nbsp', 'test100key', '101-token']]);
+				  'test@test.ru', 'Nbsp', 'Probelov', 'test100key', '101-token']]);
 
 			$this->createIndex('user_idx', $this->tableName, ['id']);
 			$this->createIndex('user_date_crate_idx', $this->tableName, ['date_crate']);

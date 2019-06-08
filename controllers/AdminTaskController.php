@@ -5,6 +5,7 @@
 	use Yii;
 	use app\models\tables\Tasks;
 	use app\models\filters\TasksFilter;
+	use yii\caching\DbDependency;
 	use yii\web\Controller;
 	use yii\web\NotFoundHttpException;
 	use yii\filters\VerbFilter;
@@ -52,8 +53,20 @@
 		 */
 		public function actionView($id)
 		{
+			$cache = \Yii::$app->cache;
+			$key = "task_{$id}";
+
+			if (!$model = $cache->get($key)) {
+				$dependency = new DbDependency();
+				$dependency->sql = 'SELECT COUNT(*) FROM tasks';
+
+				$model = $this->findModel($id);
+				$cache->set($key, $model, 100, $dependency);
+			}
+
 			return $this->render('view', [
-				'model' => $this->findModel($id),
+				'model' => $model,
+				//				'model' => $this->findModel($id)
 			]);
 		}
 

@@ -2,12 +2,11 @@
 
 	namespace app\controllers;
 
-	use app\models\{events\EventUserRegistrationComplete,
-		forms\RegisterUserForm,
-		Subscribe,
-		SubscribeBehavior,
-		tables\Tasks};
-	use yii\base\Event;
+	use app\models\{forms\RegisterUserForm,
+		tables\Tasks,
+		tables\TaskStatuses,
+		tables\Users};
+	use Yii;
 	use yii\data\ActiveDataProvider;
 	use yii\web\Controller;
 
@@ -15,20 +14,52 @@
 	{
 		public function actionIndex(): string
 		{
-			$dataProvider = new ActiveDataProvider(
-				[
-					'query'      => Tasks::find(),
-					'pagination' => [
-						'pageSize' => 3,
-					],
-				]);
+			$month = Yii::$app->request->post('month');
+			if ($month) {
+				$query = Tasks::find()->where("MONTH(created_at) = {$month}");
+				$dataProvider = new ActiveDataProvider(
+					[
+						'query'      => $query,
+						'pagination' => [
+							'pageSize' => 3,
+						],
+					]);
+
+				Yii::$app->db->cache(function () use ($dataProvider) {
+					$dataProvider->prepare();
+				});
+
+			} else {
+				$query = Tasks::find();
+				$dataProvider = new ActiveDataProvider(
+					[
+						'query'      => $query,
+						'pagination' => [
+							'pageSize' => 3,
+						],
+					]);
+			}
+
 			return $this->render('index', ['dataProvider' => $dataProvider]);
 		}
 
 		public function actionTask($id): string
 		{
-			$task = Tasks::findOne($id);
-			return $this->render('task', ['task' => $task]);
+			return $this->render('task', ['model'       => Tasks::findOne($id),
+			                              'status'      => TaskStatuses::getStatusesList(),
+			                              'responsible' => Users::getUsersList()]);
+		}
+
+		public function actionSave($id): void
+		{
+			if ($model = Tasks::findOne($id)) {
+				$model->load(Yii::$app->request->post());
+				$model->save();
+				Yii::$app->session->setFlash('success', 'The changes was save.');
+			} else {
+				Yii::$app->session->setFlash('error', 'Somewhere an error, check please...');
+			}
+			$this->redirect(Yii::$app->request->referrer);
 		}
 
 		public function actionTest(): string

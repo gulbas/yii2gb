@@ -2,19 +2,38 @@
 
 	use app\components\Bootstrap;
 	use app\models\UserIdentity;
+	use yii\i18n\PhpMessageSource;
 
 	$params = require __DIR__ . '/params.php';
 	$db = require __DIR__ . '/db.php';
 
 	$config = [
 		'id'         => 'basic',
+		'language'   => 'en',
 		'basePath'   => dirname(__DIR__),
 		'bootstrap'  => ['log', 'bootstrap'],
 		'aliases'    => [
 			'@bower' => '@vendor/bower-asset',
 			'@npm'   => '@vendor/npm-asset',
+			'@img'   => '@app/web/img',
 		],
 		'components' => [
+			'i18n'         => [
+				'translations' => [
+					'app*'      => [
+						'class'    => PhpMessageSource::class,
+						'basePath' => '@app/messages',
+					],
+					'calendar*' => [
+						'class'    => PhpMessageSource::class,
+						'basePath' => '@app/messages',
+					],
+					'task*'     => [
+						'class'    => PhpMessageSource::class,
+						'basePath' => '@app/messages',
+					],
+				],
+			],
 			'bootstrap'    => [
 				'class' => Bootstrap::class,
 			],
@@ -22,10 +41,10 @@
 				// !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
 				'cookieValidationKey' => 'i8ZqZnVHgCi2CNt0SBUFVQr8U6jwad-U',
 			],
-			'redis' => [
-				'class' => 'yii\redis\Connection',
+			'redis'        => [
+				'class'    => 'yii\redis\Connection',
 				'hostname' => 'localhost',
-				'port' => 6379,
+				'port'     => 6379,
 				'database' => 0,
 			],
 			'cache'        => [

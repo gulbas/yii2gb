@@ -2,14 +2,15 @@
 
 	namespace app\models\tables;
 
+	use Yii;
 	use yii\behaviors\TimestampBehavior;
 	use yii\db\{ActiveQuery, ActiveRecord, Expression};
+	use yii\web\UploadedFile;
 
 	/**
 	 * This is the model class for table "tasks".
 	 *
 	 * @property int $id
-	 * @property string $name Task name
 	 * @property string $description Task description
 	 * @property int $creator_id Task creator id
 	 * @property int $responsible_id Task responsible id
@@ -21,9 +22,15 @@
 	 * @property $responsible
 	 * @property int $created_at [timestamp]
 	 * @property int $updated_at [timestamp]
- */
+	 * @property ActiveQuery $taskComments
+	 * @property ActiveQuery $taskAttachments
+	 * @property string $title [varchar(50)]  Task title
+	 */
 	class Tasks extends ActiveRecord
 	{
+
+		public $upload;
+
 		/**
 		 * {@inheritdoc}
 		 */
@@ -38,11 +45,11 @@
 		public function rules()
 		{
 			return [
-				[['name'], 'required'],
+				[['title'], 'required'],
 				[['creator_id', 'responsible_id', 'status_id'], 'integer'],
 				[['deadline'], 'safe'],
-				[['name'], 'string', 'max' => 50],
-				[['description'], 'string', 'max' => 255],
+				[['title'], 'string', 'max' => 50],
+				[['description'], 'string', 'max' => 255]
 			];
 		}
 
@@ -53,12 +60,13 @@
 		{
 			return [
 				'id'             => 'ID',
-				'name'           => 'Name',
-				'description'    => 'Description',
-				'creator_id'     => 'Creator ID',
-				'responsible_id' => 'Responsible ID',
-				'deadline'       => 'Deadline',
-				'status_id'      => 'Status ID',
+				'title'          => Yii::t('task', 'title'),
+				'description'    => Yii::t('task', 'description'),
+				'creator_id'     => Yii::t('task', 'creator'),
+				'responsible_id' => Yii::t('task', 'responsible'),
+				'deadline'       => Yii::t('task', 'deadline'),
+				'status_id'      => Yii::t('task', 'status'),
+				'upload'         => Yii::t('app', 'upload'),
 			];
 		}
 
@@ -85,5 +93,15 @@
 					'value' => new Expression('CURRENT_TIMESTAMP()'),
 				],
 			];
+		}
+
+		public function getTaskAttachments(): ActiveQuery
+		{
+			return $this->hasMany(TaskAttachments::class, ['task_id' => 'id']);
+		}
+
+		public function getTaskComments(): ActiveQuery
+		{
+			return $this->hasMany(TaskComments::class, ['task_id' => 'id']);
 		}
 	}

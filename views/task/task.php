@@ -51,3 +51,4 @@
 		<?php ActiveForm::end() ?>
     </div>
 </div>
+</div>

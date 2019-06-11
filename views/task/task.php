@@ -62,7 +62,6 @@
 
 		<?= Html::submitButton(Yii::t('app', 'buttonSave'), ['class' => 'btn btn-success']); ?>
 		<?php ActiveForm::end() ?>
-
         <div class="task-attachments">
             <h3><?= Yii::t('task', 'attachments_bloc_title') ?></h3>
 
@@ -118,3 +117,7 @@
         </div>
 
     </div>
+    </div>
+</div>
+</div>
+

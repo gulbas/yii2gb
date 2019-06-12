@@ -6,8 +6,7 @@
 	$this->params['breadcrumbs'][] = $this->title;
 
 	use app\models\tables\Tasks;
-	use kartik\datetime\DateTimePicker;
-	use kartik\widgets\FileInput;
+	use kartik\{datetime\DateTimePicker, widgets\FileInput};
 	use yii\helpers\{Html, Url};
 	use yii\widgets\ActiveForm;
 
@@ -118,3 +117,4 @@
         </div>
 
     </div>
+</div>

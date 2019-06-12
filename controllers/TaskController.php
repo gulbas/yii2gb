@@ -24,7 +24,6 @@
 
 		public function actionTask($id): string
 		{
-
 			return $this->render('task', [
 				'model'              => Tasks::findOne($id),
 				'status'             => TaskStatuses::getStatusesList(),

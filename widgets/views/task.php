@@ -1,8 +1,9 @@
 <?php
 	//Используем класс.
+	use app\models\tables\Tasks;
 	use yii\helpers\Url;
 
-	/** @var $model \app\models\tables\Tasks */
+	/** @var $model Tasks */
 	$this->title = Yii::t('task', 'label');
 ?>
 <div class="caption">

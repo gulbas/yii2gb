@@ -76,7 +76,7 @@
 
             <div class="attachments-history">
 				<?php foreach ($model->taskAttachments as $file): ?>
-                    <a href="/img/tasks/<?= $file->name ?>">
+                    <a href="<?= Url::to("/img/tasks/{$file->name}") ?>">
                         <img src="/img/tasks/thumbnail/<?= $file->name ?>" alt="img_thumbnail">
                     </a>
 				<?php endforeach; ?>
@@ -114,13 +114,5 @@
                 </div>
             </div>
         </div>
-
-    </div>
-<<<<<<< HEAD
-</div>
-=======
     </div>
 </div>
-</div>
-
->>>>>>> eea453b3f38d45234b783bcc148d338ed9316971

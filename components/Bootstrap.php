@@ -25,7 +25,7 @@
 					->setTo($user->email)
 					->setFrom('info@nbsp.ru')
 					->setSubject('New task')
-					->setTextBody("You have a task {$task->name}. Die but do!")
+					->setTextBody("You have a task {$task->title}. Die but do!")
 					->send();
 			};
 

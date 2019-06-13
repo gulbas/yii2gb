@@ -9,8 +9,7 @@
 		tables\TaskStatuses,
 		tables\Users};
 	use Yii;
-	use yii\caching\TagDependency;
-	use yii\web\{Controller};
+	use yii\{caching\TagDependency, web\Controller};
 	use vintage\tinify\UploadedFile;
 
 	class TaskController extends Controller
@@ -40,9 +39,9 @@
 				$model->load(Yii::$app->request->post());
 				$model->save();
 				TagDependency::invalidate(Yii::$app->cache, 'cache_tasks_month');
-				Yii::$app->session->setFlash('success', 'The changes was save.');
+				Yii::$app->session->setFlash('success', Yii::t('app', 'message_success'));
 			} else {
-				Yii::$app->session->setFlash('error', 'Somewhere an error,  check please...');
+				Yii::$app->session->setFlash('error', Yii::t('app', 'message_error'));
 			}
 			$this->redirect(Yii::$app->request->referrer);
 		}

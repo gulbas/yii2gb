@@ -14,6 +14,7 @@
 		public $assigned;
 		public $dedline;
 		public $status;
+		public $upload;
 
 		public function rules()
 		{

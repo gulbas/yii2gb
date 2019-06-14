@@ -16,7 +16,7 @@
 		{
 			$this->createTable($this->tableName, [
 				'id'             => $this->primaryKey(),
-				'name'           => $this->string(50)->notNull()->comment('Task name'),
+				'title'           => $this->string(50)->notNull()->comment('Task title'),
 				'description'    => $this->string(255)->comment('Task description'),
 				'creator_id'     => $this->integer()->comment('Task creator id'),
 				'responsible_id' => $this->integer()->comment('Task responsible id'),
@@ -31,7 +31,7 @@
 
 			//justForTheTest
 			$this->batchInsert($this->tableName,
-				['name', 'description', 'creator_id', 'responsible_id', 'deadline', 'status_id',],
+				['title', 'description', 'creator_id', 'responsible_id', 'deadline', 'status_id',],
 				[['Task 1', 'Install Framework', 1, 2, '2019-05-25', 1],
 				 ['Task 2', 'Create Migration', 2, 1, '2019-06-02', 2],
 				 ['Task 3', 'Test AR', 2, 1, '2019-06-02', 2],

@@ -3,6 +3,7 @@
 	namespace app\models\tables;
 
 	use Yii;
+	use yii\db\{ActiveQuery, ActiveRecord};
 	use yii\helpers\ArrayHelper;
 
 	/**
@@ -13,7 +14,7 @@
 	 *
 	 * @property Tasks[] $tasks
 	 */
-	class TaskStatuses extends \yii\db\ActiveRecord
+	class TaskStatuses extends ActiveRecord
 	{
 		/**
 		 * {@inheritdoc}
@@ -36,7 +37,7 @@
 		/**
 		 * {@inheritdoc}
 		 */
-		public function attributeLabels()
+		public function attributeLabels(): array
 		{
 			return [
 				'id'   => 'ID',
@@ -45,9 +46,9 @@
 		}
 
 		/**
-		 * @return \yii\db\ActiveQuery
+		 * @return ActiveQuery
 		 */
-		public function getTasks()
+		public function getTasks(): ActiveQuery
 		{
 			return $this->hasMany(Tasks::className(), ['status_id' => 'id']);
 		}
@@ -55,9 +56,10 @@
 		public static function getStatusesList(): array
 		{
 			$statuses = static::find()
-				->select(['id', 'name'])
+				->select(['name'])
 				->asArray()
-				->all();
-			return ArrayHelper::map($statuses, 'id', 'name');
+				->indexBy('id')
+				->column();
+			return $statuses;
 		}
 	}

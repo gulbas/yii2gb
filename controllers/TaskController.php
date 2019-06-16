@@ -16,8 +16,9 @@
 	{
 		public function actionIndex(): string
 		{
+			$month = Yii::$app->request->post('month');
 			return $this->render('index', [
-				'dataProvider' => (new TasksFilter)->searchByMonth(),
+				'dataProvider' => (new TasksFilter)->searchByMonth($month),
 			]);
 		}
 

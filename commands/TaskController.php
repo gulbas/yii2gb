@@ -9,23 +9,19 @@
 
 	class TaskController extends Controller
 	{
-
-		public $date = 'CURRENT_DATE()';
-
 		/**
 		 * If you want something different from the current date, then set the command -d='Y-m-d'.
 		 * @param int $delay
 		 * @return int
 		 */
-		public function actionTasksWithExpiringDeadlines($delay = 0): int
+		public function actionDedline($delay = 0): int
 		{
-			//TODO что-то не понятное с некоторыми компьютерами не видет кавычки
-/*			if ($this->date !== 'CURRENT_DATE()') {
-				$this->date = "\"{$this->date}\"";
-			}*/
-			$tasks = Tasks::find()->where(
-				"deadline = {$this->date} OR deadline = DATE_ADD({$this->date}, INTERVAL 1 DAY)")
+			/** @var Tasks[] $tasks */
+			$tasks = Tasks::find()
+				->where("DATEDIFF({$this->date}, deadline) <= 1")
+				->with('responsible')
 				->all();
+
 			if ($tasks) {
 				$emailMessages = [];
 				$counter = 0;
@@ -43,11 +39,11 @@
 				}
 				Console::endProgress();
 				$message = Yii::$app->i18n->messageFormatter->format(
-				    'Sent {n, plural, =1{# reminder of the approach of the deadline for the task by e-mail} 
+					'Sent {n, plural, =1{# reminder of the approach of the deadline for the task by e-mail} 
 				    few{# reminder of the approach of the deadline for the tasks} 
 				    many{# reminder of the approach of the deadline for the tasks} 
 				    other{# reminder of the approach of the deadline for the tasks}} by e-mail!',
-				    ['n' => $counter], Yii::$app->language
+					['n' => $counter], Yii::$app->language
 				);
 				$this->stdout($message, Console::BG_GREEN);
 				Yii::$app->mailer->sendMultiple($emailMessages);

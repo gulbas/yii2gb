@@ -1,8 +1,11 @@
 <?php
 
-	use app\components\Bootstrap;
-	use app\models\UserIdentity;
-	use yii\i18n\PhpMessageSource;
+	use app\models\tables\Users;
+	use developeruz\db_rbac\Yii2DbRbac;
+	use yii\swiftmailer\Mailer;
+	use yii\log\FileTarget;
+	use yii\{rbac\DbManager, i18n\PhpMessageSource};
+	use app\{components\Bootstrap, models\UserIdentity};
 
 	$params = require __DIR__ . '/params.php';
 	$db = require __DIR__ . '/db.php';
@@ -18,6 +21,9 @@
 			'@img'   => '@app/web/img',
 		],
 		'components' => [
+			'authManager'  => [
+				'class' => 'yii\rbac\DbManager',
+			],
 			'i18n'         => [
 				'translations' => [
 					'app*'      => [
@@ -58,7 +64,7 @@
 				'errorAction' => 'site/error',
 			],
 			'mailer'       => [
-				'class'            => 'yii\swiftmailer\Mailer',
+				'class'            => Mailer::class,
 				// send all mails to a file by default. You have to set
 				// 'useFileTransport' to false and configure a transport
 				// for the mailer to send real emails.
@@ -68,7 +74,7 @@
 				'traceLevel' => YII_DEBUG ? 3 : 0,
 				'targets'    => [
 					[
-						'class'  => 'yii\log\FileTarget',
+						'class'  => FileTarget::class,
 						'levels' => ['error', 'warning'],
 					],
 				],
@@ -92,6 +98,15 @@
 
 		],
 		'params'     => $params,
+		'modules' => [
+			'permit' => [
+				'class' => Yii2DbRbac::class,
+				'params' => [
+					'userClass' => Users::class,
+					'accessRoles' => ['admin']
+				]
+			],
+		],
 	];
 
 	if (YII_ENV_DEV) {

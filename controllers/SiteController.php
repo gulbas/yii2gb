@@ -99,7 +99,7 @@
 		{
 			Yii::$app->user->logout();
 
-			return $this->goHome();
+			return $this->redirect(Yii::$app->request->getReferrer());
 		}
 
 		/**

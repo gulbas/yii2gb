@@ -76,9 +76,8 @@
 			return $dataProvider;
 		}
 
-		public function searchByMonth(): ActiveDataProvider
+		public function searchByMonth($month): ActiveDataProvider
 		{
-			$month = Yii::$app->request->post('month');
 			$query = Tasks::find();
 
 			if ($month) {

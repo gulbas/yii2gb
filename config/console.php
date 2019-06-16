@@ -1,5 +1,7 @@
 <?php
 
+	use yii\rbac\DbManager;
+
 	$params = require __DIR__ . '/params.php';
 	$db = require __DIR__ . '/db.php';
 
@@ -14,17 +16,20 @@
 			'@tests' => '@app/tests',
 		],
 		'components'          => [
-			'mailer'       => [
+			'authManager' => [
+				'class' => DbManager::class,
+			],
+			'mailer'      => [
 				'class'            => 'yii\swiftmailer\Mailer',
 				// send all mails to a file by default. You have to set
 				// 'useFileTransport' to false and configure a transport
 				// for the mailer to send real emails.
 				'useFileTransport' => true,
 			],
-			'cache' => [
+			'cache'       => [
 				'class' => 'yii\caching\FileCache',
 			],
-			'log'   => [
+			'log'         => [
 				'targets' => [
 					[
 						'class'  => 'yii\log\FileTarget',
@@ -32,7 +37,7 @@
 					],
 				],
 			],
-			'db'    => $db,
+			'db'          => $db,
 		],
 		'params'              => $params,
 		/*
@@ -42,10 +47,10 @@
 			],
 		],
 		*/
-/*		'controllerMap'       => [
-			// ...
-			'tinify' => \vintage\tinify\cli\TinifyController::class,
-		],*/
+		/*		'controllerMap'       => [
+					// ...
+					'tinify' => \vintage\tinify\cli\TinifyController::class,
+				],*/
 	];
 
 	if (YII_ENV_DEV) {

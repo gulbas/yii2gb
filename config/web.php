@@ -79,6 +79,14 @@
 				'enablePrettyUrl' => true,
 				'showScriptName'  => false,
 				'rules'           => [
+					'GET task/<id:\d+>'           => 'task/task',
+					'task/<id:\d+>/save'          => 'task/save',
+					'admin/users/view/<id:\d+>'   => 'admin-user/view',
+					'admin/users/update/<id:\d+>' => 'admin-user/update',
+					'admin/users/delete/<id:\d+>' => 'admin-user/delete',
+					'admin/tasks/view/<id:\d+>'   => 'admin-task/view',
+					'admin/tasks/update/<id:\d+>' => 'admin-task/update',
+					'admin/tasks/delete/<id:\d+>' => 'admin-task/delete',
 				],
 			],
 

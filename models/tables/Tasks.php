@@ -5,7 +5,6 @@
 	use Yii;
 	use yii\behaviors\TimestampBehavior;
 	use yii\db\{ActiveQuery, ActiveRecord, Expression};
-	use yii\web\UploadedFile;
 
 	/**
 	 * This is the model class for table "tasks".

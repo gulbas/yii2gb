@@ -1,8 +1,9 @@
 <?php
 	return [
 		'hello' => 'Hello!',
-		'error' => 'Catch Error!',
 		'test_content' => 'Content',
 		'buttonSave' => 'Save',
-		'upload' => 'Upload'
+		'upload' => 'Upload',
+		'message_error' => 'Somewhere an error,  check please...',
+		'message_success' => 'The changes was save.'
 	];

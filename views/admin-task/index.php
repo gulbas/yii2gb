@@ -4,7 +4,6 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 
 /* @var $this yii\web\View */
-/* @var $searchModel app\models\filters\TasksFilter */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = 'Tasks';
@@ -18,35 +17,25 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= Html::a('Create Tasks', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
-    <?php echo \app\widgets\MyWidget::widget([
-            'label' => 'Опять нажми'
-    ])?>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
-<!--    --><?/*= GridView::widget([
+    <?= GridView::widget([
         'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
             'id',
-            'name',
+            'title',
             'description',
             'creator_id',
             'responsible_id',
             //'deadline',
             //'status_id',
+            //'created_at',
+            //'updated_at',
 
             ['class' => 'yii\grid\ActionColumn'],
         ],
-    ]); */?>
+    ]); ?>
 
-	<?=\yii\widgets\ListView::widget([
-		'itemView' => 'view',
-		'dataProvider' => $dataProvider,
-        'viewParams' => [
-                'hide' => 'true'
-        ]
-	])?>
 
 </div>

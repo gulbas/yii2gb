@@ -1,7 +1,6 @@
 <?php
 	/* @var $task */
 	$this->title = $model->title;
-
 	$this->params['breadcrumbs'][] = ['label' => Yii::t('task', 'label'), 'url' => ['index']];
 	$this->params['breadcrumbs'][] = $this->title;
 
@@ -21,12 +20,11 @@
 
 <div class="task-edit">
     <div class="task-edit-main">
-		<?php $form = ActiveForm::begin(['action' => Url::to(['task/save', 'id' => $model->id])]); ?>
 
+		<?php $form = ActiveForm::begin(['action' => Url::to(['task/save', 'id' => $model->id])]); ?>
         <div class="row">
             <div class="col-md-12"><?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?></div>
         </div>
-
         <div class="row">
             <div class="col-lg-4">
 				<?= $form->field($model, 'status_id')->dropDownList($status) ?>
@@ -53,17 +51,15 @@
 				?>
             </div>
         </div>
-
         <div>
 			<?= $form->field($model, 'description')
 				->textarea() ?>
         </div>
-
 		<?= Html::submitButton(Yii::t('app', 'buttonSave'), ['class' => 'btn btn-success']); ?>
 		<?php ActiveForm::end() ?>
+
         <div class="task-attachments">
             <h3><?= Yii::t('task', 'attachments_bloc_title') ?></h3>
-
 			<?php $form = ActiveForm::begin(['action' => Url::to(['task/add-attachment'])]); ?>
 			<?= $form->field($taskAttachmentForm, 'taskId')
 				->hiddenInput(['value' => $model->id,])->label(false) ?>
@@ -73,7 +69,6 @@
 				])->label(false) ?>
 			<?php ActiveForm::end() ?>
             <br>
-
             <div class="attachments-history">
 				<?php foreach ($model->taskAttachments as $file): ?>
                     <a href="<?= Url::to("/img/tasks/{$file->name}") ?>">
@@ -83,10 +78,8 @@
             </div>
             <hr>
 
-
             <div class="task-comments">
                 <h3><?= Yii::t('task', 'comments_bloc_title') ?></h3>
-
 				<?php $form = ActiveForm::begin([
 					'action' => Url::to(['task/add-comment']),
 				]); ?>
@@ -112,7 +105,9 @@
 							<?= $comment->content ?></p>
 					<?php endforeach; ?>
                 </div>
+
             </div>
         </div>
     </div>
+</div>
 </div>

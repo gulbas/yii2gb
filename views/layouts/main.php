@@ -1,16 +1,16 @@
 <?php
 
-/* @var $this \yii\web\View */
-/* @var $content string */
+	/* @var $this \yii\web\View */
 
-use app\widgets\Alert;
-use yii\helpers\Html;
-use yii\bootstrap\Nav;
-use yii\bootstrap\NavBar;
-use yii\widgets\Breadcrumbs;
-use app\assets\AppAsset;
+	/* @var $content string */
 
-AppAsset::register($this);
+	use app\widgets\Alert;
+	use yii\widgets\Breadcrumbs;
+	use yii\helpers\Html;
+	use yii\bootstrap\{Nav, NavBar};
+	use app\assets\AppAsset;
+
+	AppAsset::register($this);
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -19,59 +19,67 @@ AppAsset::register($this);
     <meta charset="<?= Yii::$app->charset ?>">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <?php $this->registerCsrfMetaTags() ?>
+	<?php $this->registerCsrfMetaTags() ?>
     <title><?= Html::encode($this->title) ?></title>
-    <?php $this->head() ?>
+	<?php $this->head() ?>
 </head>
 <body>
 <?php $this->beginBody() ?>
 
 <div class="wrap">
-    <?php
-    NavBar::begin([
-        'brandLabel' => Yii::$app->name,
-        'brandUrl' => Yii::$app->homeUrl,
-        'options' => [
-            'class' => 'navbar-inverse navbar-fixed-top',
-        ],
-    ]);
-    echo Nav::widget([
-        'options' => ['class' => 'navbar-nav navbar-right'],
-        'items' => [
-	        [
-		        'label' => 'Lang',
-		        'items' => [
-			        ['label' => 'en', 'url' => ['site/lang', 'lang' => 'en']],
-			        ['label' => 'ru', 'url' => ['site/lang', 'lang' => 'ru']]
-		        ]
-	        ],
-            ['label' => 'Home', 'url' => ['/site/index']],
-            ['label' => 'About', 'url' => ['/site/about']],
-            ['label' => 'Contact', 'url' => ['/site/contact']],
-            ['label' => 'Tasks', 'url' => ['/task']],
-            Yii::$app->user->isGuest ? (
-                ['label' => 'Login', 'url' => ['/site/login']]
-            ) : (
-                '<li>'
-                . Html::beginForm(['/site/logout'], 'post')
-                . Html::submitButton(
-                    'Logout (' . Yii::$app->user->identity->username . ')',
-                    ['class' => 'btn btn-link logout']
-                )
-                . Html::endForm()
-                . '</li>'
-            )
-        ],
-    ]);
-    NavBar::end();
-    ?>
+	<?php
+		NavBar::begin([
+			'brandLabel' => Yii::$app->name,
+			'brandUrl'   => Yii::$app->homeUrl,
+			'options'    => [
+				'class' => 'navbar-inverse navbar-fixed-top',
+			],
+		]);
+		echo Nav::widget([
+			'options' => ['class' => 'navbar-nav navbar-right'],
+			'items'   => [
+				[
+					'label' => 'Lang',
+					'items' => [
+						['label' => 'en', 'url' => ['site/lang', 'lang' => 'en']],
+						['label' => 'ru', 'url' => ['site/lang', 'lang' => 'ru']],
+					],
+				],
+				[
+					'label'   => 'Role Management',
+					'items'   => [
+						['label' => 'Access rights management', 'url' => ['/permit/access/permission']],
+						['label' => 'Role management', 'url' => ['/permit/access/role']],
+					],
+					'visible' => Yii::$app->user->can('admin'),
+				],
+				['label' => 'Home', 'url' => ['/site/index']],
+				['label' => 'About', 'url' => ['/site/about']],
+				['label' => 'Contact', 'url' => ['/site/contact']],
+				['label' => 'Tasks', 'url' => ['/task']],
+				Yii::$app->user->isGuest ? (
+				['label' => 'Login', 'url' => ['/site/login']]
+				) : (
+					'<li>'
+					. Html::beginForm(['/site/logout'], 'post')
+					. Html::submitButton(
+						'Logout (' . Yii::$app->user->identity->username . ')',
+						['class' => 'btn btn-link logout']
+					)
+					. Html::endForm()
+					. '</li>'
+				),
+			],
+		]);
+		NavBar::end();
+	?>
 
     <div class="container">
-        <?= Breadcrumbs::widget([
-            'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
-        ]) ?>
-        <?= Alert::widget() ?>
-        <?= $content ?>
+		<?= Breadcrumbs::widget([
+			'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
+		]) ?>
+		<?= Alert::widget() ?>
+		<?= $content ?>
     </div>
 </div>
 

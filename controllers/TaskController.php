@@ -2,18 +2,33 @@
 
 	namespace app\controllers;
 
-	use app\models\{filters\TasksFilter,
-		forms\TaskAddAttachmentsForm,
-		tables\TaskComments,
-		tables\Tasks,
-		tables\TaskStatuses,
-		tables\Users};
+	use app\models\filters\TasksFilter;
+	use app\models\forms\TaskAddAttachmentsForm;
+	use app\models\tables\{TaskComments, Tasks, TaskStatuses, Users};
 	use Yii;
-	use yii\{caching\TagDependency, web\Controller};
+	use yii\{caching\TagDependency, filters\AccessControl, web\Controller};
 	use vintage\tinify\UploadedFile;
 
 	class TaskController extends Controller
 	{
+
+		public function behaviors()
+		{
+			return [
+				'access' => [
+					'class' => AccessControl::className(),
+					'only'  => ['task'],
+					'rules' => [
+						[
+							'actions' => ['task'],
+							'allow'   => true,
+							'roles'   => ['admin', 'moder'],
+						],
+					],
+				],
+			];
+		}
+
 		public function actionIndex(): string
 		{
 			$month = Yii::$app->request->post('month');

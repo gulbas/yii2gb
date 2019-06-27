@@ -5,9 +5,8 @@
 	$this->params['breadcrumbs'][] = $this->title;
 
 
-	use app\widgets\{Task};
-	use yii\widgets\{ActiveForm, ListView};
-	use yii\helpers\Html;
+	use app\{assets\TaskAsset, widgets\Task};
+	use yii\{widgets\ActiveForm, widgets\ListView, helpers\Html};
 
 	$items = [
 		'1'  => Yii::t('calendar', 'January'),
@@ -28,7 +27,10 @@
 		'class'  => 'form-control',
 		'id'     => 'select-month',
 	];
+
+	TaskAsset::register($this);
 ?>
+
 <h1><?= $this->title ?></h1>
 
 <div class="container">
@@ -51,7 +53,7 @@
 	'itemView'     => function ($model) {
 		return Task::widget(['model' => $model]);
 	},
-	'itemOptions'  => ['class' => 'col-md-4'],
+	'itemOptions'  => ['class' => 'col-md-4 ml-auto'],
 	'options'      => [
 		'class' => 'row',
 	],

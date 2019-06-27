@@ -113,13 +113,3 @@ a.desc:after {
 .nav > li > form > button.logout:focus {
     outline: none;
 }
-
-.searchByMonth {
-    margin-bottom: 10px;
-}
-
-.navigation {
-    text-align: center;
-}
-
-

@@ -58,55 +58,58 @@
 		<?= Html::submitButton(Yii::t('app', 'buttonSave'), ['class' => 'btn btn-success']); ?>
 		<?php ActiveForm::end() ?>
 
-        <div class="task-attachments">
-            <h3><?= Yii::t('task', 'attachments_bloc_title') ?></h3>
-			<?php $form = ActiveForm::begin(['action' => Url::to(['task/add-attachment'])]); ?>
-			<?= $form->field($taskAttachmentForm, 'taskId')
-				->hiddenInput(['value' => $model->id,])->label(false) ?>
-			<?= $form->field($taskAttachmentForm, 'file')
-				->widget(FileInput::class, [
-					'options' => ['accept' => 'image/*'],
-				])->label(false) ?>
-			<?php ActiveForm::end() ?>
-            <br>
-            <div class="attachments-history">
-				<?php foreach ($model->taskAttachments as $file): ?>
-                    <a href="<?= Url::to("/img/tasks/{$file->name}") ?>">
-                        <img src="/img/tasks/thumbnail/<?= $file->name ?>" alt="img_thumbnail">
-                    </a>
-				<?php endforeach; ?>
-            </div>
-            <hr>
-
-            <div class="task-comments">
-                <h3><?= Yii::t('task', 'comments_bloc_title') ?></h3>
-				<?php $form = ActiveForm::begin([
-					'action' => Url::to(['task/add-comment']),
-				]); ?>
-				<?= $form->field($taskCommentForm, 'user_id')
-					->hiddenInput(['value' => $userId])->label(false); ?>
-				<?= $form->field($taskCommentForm, 'task_id')
-					->hiddenInput(['value' => $model->id])->label(false); ?>
-                <div class="row">
-                    <div class="col-md-11">
-						<?= $form->field($taskCommentForm, 'content')->textInput()->label(false); ?>
-                    </div>
-                    <div class="col-md-1">
-						<?= Html::submitButton(
-							Yii::t('task', 'comments_button'), ['class' => 'btn btn-success']
-						); ?>
-                    </div>
-                </div>
+		<?php if (Yii::$app->user->can('TaskRemove')): ?>
+            <div class="task-attachments">
+                <h3><?= Yii::t('task', 'attachments_bloc_title') ?></h3>
+				<?php $form = ActiveForm::begin(['action' => Url::to(['task/add-attachment'])]); ?>
+				<?= $form->field($taskAttachmentForm, 'taskId')
+					->hiddenInput(['value' => $model->id,])->label(false) ?>
+				<?= $form->field($taskAttachmentForm, 'file')
+					->widget(FileInput::class, [
+						'options' => ['accept' => 'image/*'],
+					])->label(false) ?>
 				<?php ActiveForm::end() ?>
-
-                <div class="task-comments-history">
-					<?php foreach ($model->taskComments as $comment): ?>
-                        <p><?= $comment->date_crate ?> <strong><?= $comment->user->username ?></strong>:
-							<?= $comment->content ?></p>
+                <br>
+                <div class="attachments-history">
+					<?php foreach ($model->taskAttachments as $file): ?>
+                        <a href="<?= Url::to("/img/tasks/{$file->name}") ?>">
+                            <img src="/img/tasks/thumbnail/<?= $file->name ?>" alt="img_thumbnail">
+                        </a>
 					<?php endforeach; ?>
                 </div>
 
+                <hr>
+
+                <div class="task-comments">
+                    <h3><?= Yii::t('task', 'comments_bloc_title') ?></h3>
+					<?php $form = ActiveForm::begin([
+						'action' => Url::to(['task/add-comment']),
+					]); ?>
+					<?= $form->field($taskCommentForm, 'user_id')
+						->hiddenInput(['value' => $userId])->label(false); ?>
+					<?= $form->field($taskCommentForm, 'task_id')
+						->hiddenInput(['value' => $model->id])->label(false); ?>
+                    <div class="row">
+                        <div class="col-md-11">
+							<?= $form->field($taskCommentForm, 'content')->textInput()->label(false); ?>
+                        </div>
+                        <div class="col-md-1">
+							<?= Html::submitButton(
+								Yii::t('task', 'comments_button'), ['class' => 'btn btn-success']
+							); ?>
+                        </div>
+                    </div>
+					<?php ActiveForm::end() ?>
+
+                    <div class="task-comments-history">
+						<?php foreach ($model->taskComments as $comment): ?>
+                            <p><?= $comment->date_crate ?> <strong><?= $comment->user->username ?></strong>:
+								<?= $comment->content ?></p>
+						<?php endforeach; ?>
+                    </div>
+
+                </div>
             </div>
-        </div>
+		<?php endif; ?>
     </div>
 </div>
